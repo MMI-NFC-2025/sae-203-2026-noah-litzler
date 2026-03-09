@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {
+    allScenesSorted,
+    oneSceneID,
+    allRepresentationsByScene,
+    getImageUrl
+} from '../../js/backend.mjs';
+
+export async function getStaticPaths() {
+    const scenes = await allScenesSorted();
+
+    return scenes.map((scene) => ({
+        params: { id: scene.id }
+    }));
+}
+
+const { id } = Astro.params;
+
+const scene = await oneSceneID(id);
+const representations = await allRepresentationsByScene(id);
+
+const photoScene = getImageUrl(scene, 'photo');
+---
+
+<Layout title={scene.nom}>
+    <main class="container">
+        <a href="/scenes">← Retour aux scènes</a>
+
+        <section class="fiche-scene">
+            <div class="image-scene">
+                {photoScene && (
+                    <img src={photoScene} alt={scene.nom} />
+                )}
+            </div>
+
+            <div class="infos-scene">
+                <h1>{scene.nom}</h1>
+                <p><strong>Localisation :</strong> {scene.localisation}</p>
+                <p><strong>Capacité :</strong> {scene.capacite}</p>
+                <p>{scene.description}</p>
+            </div>
+        </section>
+
+        <section class="programmation-scene">
+            <h2>Artistes programmés sur cette scène</h2>
+
+            <ul>
+                {representations.map((rep) => (
+                    <li>
+                        {new Date(rep.date_heure).toLocaleDateString('fr-FR')} à {new Date(rep.date_heure).toLocaleTimeString('fr-FR', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}
+                        {rep.expand?.artiste ? ` - ${rep.expand.artiste.nom}` : ''}
+                    </li>
+                ))}
+            </ul>
+        </section>
+    </main>
+</Layout>
+
+<style>
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.fiche-scene {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.image-scene img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.infos-scene h1 {
+    margin-top: 0;
+}
+
+.programmation-scene ul {
+    padding-left: 1.2rem;
+}
+
+@media (max-width: 800px) {
+    .fiche-scene {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

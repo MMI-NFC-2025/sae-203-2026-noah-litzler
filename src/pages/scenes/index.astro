@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { allScenesSorted, getImageUrl } from '../../js/backend.mjs';
+
+const scenes = await allScenesSorted();
+---
+
+<Layout title="Scènes">
+    <main class="container">
+        <h1>Les scènes</h1>
+
+        <section class="grille-scenes">
+            {scenes.map((scene) => (
+                <article class="carte-scene">
+                    <a href={`/scenes/${scene.id}`}>
+                        {getImageUrl(scene, 'photo') && (
+                            <img src={getImageUrl(scene, 'photo')} alt={scene.nom} />
+                        )}
+                        <h2>{scene.nom}</h2>
+                    </a>
+
+                    <p><strong>Localisation :</strong> {scene.localisation}</p>
+                    <p><strong>Capacité :</strong> {scene.capacite}</p>
+                    <p>{scene.description}</p>
+                </article>
+            ))}
+        </section>
+    </main>
+</Layout>
+
+<style>
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+h1 {
+    margin-bottom: 2rem;
+}
+
+.grille-scenes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+.carte-scene {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 12px;
+    background: white;
+}
+
+.carte-scene img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.carte-scene h2 {
+    margin: 0 0 0.5rem 0;
+}
+</style>

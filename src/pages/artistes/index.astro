@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { allRepresentationsSorted, getImageUrl } from '../../js/backend.mjs';
+
+const representations = await allRepresentationsSorted();
+
+const artistesMap = new Map();
+
+for (const rep of representations) {
+    const artiste = rep.expand?.artiste;
+    const scene = rep.expand?.scene;
+
+    if (!artiste) continue;
+
+    if (!artistesMap.has(artiste.id)) {
+        artistesMap.set(artiste.id, {
+            ...artiste,
+            photo_url: getImageUrl(artiste, 'photo_principale'),
+            dates: []
+        });
+    }
+
+    artistesMap.get(artiste.id).dates.push({
+        date_heure: rep.date_heure,
+        scene: scene ? scene.nom : ''
+    });
+}
+
+const artistes = Array.from(artistesMap.values());
+---
+
+<Layout title="Artistes">
+    <main class="container">
+        <h1>Les artistes</h1>
+
+        <section class="grille-artistes">
+            {artistes.map((artiste) => (
+                <article class="carte-artiste">
+                    <a href={`/artistes/${artiste.id}`}>
+                        {artiste.photo_url && (
+                            <img src={artiste.photo_url} alt={artiste.nom} />
+                        )}
+                        <h2>{artiste.nom}</h2>
+                    </a>
+
+                    <p><strong>Genre :</strong> {artiste.genre_musical}</p>
+
+                    <ul>
+                        {artiste.dates.map((date) => (
+                            <li>
+                                {new Date(date.date_heure).toLocaleDateString('fr-FR')} à {new Date(date.date_heure).toLocaleTimeString('fr-FR', {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
+                                {date.scene ? ` - ${date.scene}` : ''}
+                            </li>
+                        ))}
+                    </ul>
+                </article>
+            ))}
+        </section>
+    </main>
+</Layout>
+
+<style>
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+h1 {
+    margin-bottom: 2rem;
+}
+
+.grille-artistes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+.carte-artiste {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 12px;
+    background: white;
+}
+
+.carte-artiste img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.carte-artiste h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+.carte-artiste ul {
+    padding-left: 1.2rem;
+}
+</style>
