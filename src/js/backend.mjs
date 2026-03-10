@@ -94,3 +94,30 @@ export async function allArtistesByGenre(genre) {
     });
     return records;
 }
+
+// Authentification de l'utilisateur
+export async function Userauth(login, mdp) {
+    const authData = await pb.collection('users').authWithPassword(login, mdp);
+    return authData;
+}
+
+// Récupérer l'utilisateur actuellement connecté
+export function currentUser() {
+    return pb.authStore.model;
+}
+
+// Vérifier si l'utilisateur est connecté
+export function isUserValid() {
+    return pb.authStore.isValid;
+}
+
+// Déconnexion de l'utilisateur
+export function logoutUser() {
+    pb.authStore.clear();
+}
+
+// Ajouter un nouveau message de contact
+export async function addNewMessageContact(newMessage) {
+    const record = await pb.collection('messages_contact').create(newMessage);
+    return record;
+}

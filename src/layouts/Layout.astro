@@ -1,4 +1,7 @@
 ---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
 const { title = 'Festicloze' } = Astro.props;
 ---
 
@@ -8,8 +11,11 @@ const { title = 'Festicloze' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   </head>
-  <body>
+  <body class="bg-zinc-50 text-zinc-900">
+    <Header />
     <slot />
+    <Footer />
   </body>
-</html> 
+</html>

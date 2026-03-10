@@ -1,0 +1,180 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const tarifs = [
+    {
+        nom: 'Pass 1 jour',
+        prix: '25 €',
+        description: 'Accès à une journée du festival.'
+    },
+    {
+        nom: 'Pass 2 jours',
+        prix: '45 €',
+        description: 'Accès à deux journées du festival.'
+    },
+    {
+        nom: 'Pass complet',
+        prix: '60 €',
+        description: 'Accès à l’ensemble du festival.'
+    }
+];
+
+const hebergements = [
+    {
+        nom: 'Hôtel du Centre',
+        type: 'Hôtel',
+        adresse: '12 rue du Centre, Montbéliard',
+        description: 'Hébergement proche du centre-ville et des scènes principales.'
+    },
+    {
+        nom: 'Camping des Lumières',
+        type: 'Camping',
+        adresse: 'Route du Festival, Montbéliard',
+        description: 'Solution économique pour profiter pleinement du festival.'
+    },
+    {
+        nom: 'Auberge de la Gare',
+        type: 'Auberge',
+        adresse: '5 avenue de la Gare, Montbéliard',
+        description: 'Hébergement simple avec accès rapide aux transports.'
+    }
+];
+
+const transports = [
+    {
+        titre: 'En train',
+        description: 'La gare de Montbéliard permet un accès rapide au centre-ville et aux lieux du festival.'
+    },
+    {
+        titre: 'En voiture',
+        description: 'Des parkings sont disponibles à proximité des principales scènes.'
+    },
+    {
+        titre: 'En covoiturage',
+        description: 'Le covoiturage est recommandé pour limiter les déplacements individuels.'
+    },
+    {
+        titre: 'Parkings',
+        description: 'Des zones de stationnement dédiées sont prévues pour les visiteurs.'
+    }
+];
+
+const faq = [
+    {
+        question: 'Faut-il réserver à l’avance ?',
+        reponse: 'Oui, il est conseillé de réserver à l’avance pour garantir votre accès aux représentations.'
+    },
+    {
+        question: 'Les billets sont-ils remboursables ?',
+        reponse: 'Les billets ne sont pas remboursables, sauf en cas d’annulation d’une représentation.'
+    },
+    {
+        question: 'Peut-on assister à plusieurs concerts dans la même journée ?',
+        reponse: 'Oui, selon votre pass et les horaires de programmation.'
+    },
+    {
+        question: 'Le festival est-il accessible en transports en commun ?',
+        reponse: 'Oui, plusieurs lieux du festival sont accessibles depuis la gare et les arrêts de bus.'
+    }
+];
+---
+
+<Layout title="Infos pratiques">
+    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Festicloze 2026
+            </p>
+
+            <h1 class="text-4xl font-bold md:text-5xl">
+                Infos pratiques
+            </h1>
+
+            <p class="mt-4 max-w-2xl text-zinc-200">
+                Retrouvez les informations utiles pour préparer votre venue au festival :
+                tarifs, hébergements, transports et questions fréquentes.
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="mb-6 text-3xl font-bold text-zinc-900">Tarifs</h2>
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {tarifs.map((tarif) => (
+                    <article class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+                        <h3 class="text-2xl font-semibold text-zinc-900">{tarif.nom}</h3>
+                        <p class="mt-3 text-3xl font-bold text-zinc-900">{tarif.prix}</p>
+                        <p class="mt-3 text-zinc-700">{tarif.description}</p>
+                    </article>
+                ))}
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="mb-6 text-3xl font-bold text-zinc-900">Hébergements</h2>
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {hebergements.map((hebergement) => (
+                    <article class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+                        <p class="text-sm uppercase tracking-wide text-zinc-500">{hebergement.type}</p>
+                        <h3 class="mt-2 text-2xl font-semibold text-zinc-900">{hebergement.nom}</h3>
+                        <p class="mt-3 text-zinc-700"><strong>Adresse :</strong> {hebergement.adresse}</p>
+                        <p class="mt-3 text-zinc-700">{hebergement.description}</p>
+                    </article>
+                ))}
+            </div>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="mb-6 text-3xl font-bold text-zinc-900">Transport</h2>
+
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {transports.map((transport) => (
+                    <article class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+                        <h3 class="text-2xl font-semibold text-zinc-900">{transport.titre}</h3>
+                        <p class="mt-3 text-zinc-700">{transport.description}</p>
+                    </article>
+                ))}
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-6 text-3xl font-bold text-zinc-900">FAQ</h2>
+
+            <div class="space-y-4">
+                {faq.map((item, index) => (
+                    <article class="rounded-2xl border border-zinc-200 bg-white shadow-sm">
+                        <button
+                            class="faq-button flex w-full items-center justify-between px-6 py-5 text-left"
+                            data-index={index}
+                        >
+                            <span class="text-lg font-semibold text-zinc-900">{item.question}</span>
+                            <span class="text-2xl text-zinc-500">+</span>
+                        </button>
+
+                        <div class="faq-content hidden px-6 pb-5 text-zinc-700" data-index={index}>
+                            {item.reponse}
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const buttons = document.querySelectorAll('.faq-button');
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const index = button.dataset.index;
+                const content = document.querySelector(`.faq-content[data-index="${index}"]`);
+
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</Layout>

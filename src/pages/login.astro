@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Connexion">
+    <main class="mx-auto max-w-xl px-4 py-10 sm:px-6 lg:px-8">
+        <section class="rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Espace utilisateur
+            </p>
+
+            <h1 class="text-4xl font-bold">
+                Connexion
+            </h1>
+
+            <p class="mt-4 text-zinc-200">
+                Connectez-vous avec votre adresse email et votre mot de passe.
+            </p>
+        </section>
+
+        <section class="mt-8 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label for="email" class="mb-2 block text-sm font-medium text-zinc-700">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        required
+                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                        placeholder="exemple@mail.com"
+                    />
+                </div>
+
+                <div>
+                    <label for="password" class="mb-2 block text-sm font-medium text-zinc-700">
+                        Mot de passe
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        required
+                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                        placeholder="Votre mot de passe"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    class="rounded-full bg-zinc-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-zinc-700"
+                >
+                    Se connecter
+                </button>
+            </form>
+
+            <p id="message" class="mt-4 text-sm"></p>
+
+            <div class="mt-6">
+                <button
+                    id="logoutBtn"
+                    class="rounded-full border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100"
+                >
+                    Se déconnecter
+                </button>
+            </div>
+        </section>
+    </main>
+<script>
+    import { Userauth, isUserValid, currentUser, logoutUser } from '../js/backend.mjs';
+
+    const form = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    function afficherEtatConnexion() {
+        if (isUserValid()) {
+            const user = currentUser();
+            message.textContent = `Connecté : ${user.email}`;
+            message.className = 'mt-4 text-sm text-green-600';
+        } else {
+            message.textContent = 'Aucun utilisateur connecté';
+            message.className = 'mt-4 text-sm text-zinc-600';
+        }
+    }
+
+    afficherEtatConnexion();
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            await Userauth(email, password);
+            afficherEtatConnexion();
+        } catch (error) {
+            console.error(error);
+            message.textContent = 'Email ou mot de passe incorrect';
+            message.className = 'mt-4 text-sm text-red-600';
+        }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        logoutUser();
+        afficherEtatConnexion();
+    });
+</script>
+</Layout>

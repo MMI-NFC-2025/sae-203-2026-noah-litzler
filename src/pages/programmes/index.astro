@@ -1,0 +1,211 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProgrammeItem from '../../components/ProgrammeItem.astro';
+import { allRepresentationsSorted } from '../../js/backend.mjs';
+
+const representations = await allRepresentationsSorted();
+
+const programmeParJour = new Map();
+
+for (const rep of representations) {
+    const date = new Date(rep.date_heure);
+
+    const jourLabel = date.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    const jourUrl = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+    if (!programmeParJour.has(jourUrl)) {
+        programmeParJour.set(jourUrl, {
+            label: jourLabel,
+            reps: []
+        });
+    }
+
+    programmeParJour.get(jourUrl).reps.push(rep);
+}
+
+const jours = Array.from(programmeParJour.entries());
+
+const genres = [
+    ...new Set(
+        representations
+            .map((rep) => rep.expand?.artiste?.genre_musical)
+            .filter(Boolean)
+    )
+].sort();
+
+const scenes = [
+    ...new Set(
+        representations
+            .map((rep) => rep.expand?.scene?.nom)
+            .filter(Boolean)
+    )
+].sort();
+
+const heures = [
+    ...new Set(
+        representations.map((rep) =>
+            new Date(rep.date_heure).toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            })
+        )
+    )
+].sort();
+---
+
+<Layout title="Programme">
+    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Festicloze 2026
+            </p>
+
+            <h1 class="text-4xl font-bold md:text-5xl">
+                Le programme du festival
+            </h1>
+
+            <p class="mt-4 max-w-2xl text-zinc-200">
+                Retrouvez tous les artistes programmés, classés par jour, avec des filtres par genre, horaire et scène.
+            </p>
+
+            <div class="mt-6">
+                <a
+                    href="/programme.pdf"
+                    class="inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"
+                >
+                    Télécharger le programme PDF
+                </a>
+            </div>
+        </section>
+
+        <section class="mb-10 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+            <h2 class="mb-4 text-2xl font-semibold text-zinc-900">
+                Filtrer le programme
+            </h2>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div>
+                    <label for="genreFilter" class="mb-2 block text-sm font-medium text-zinc-700">
+                        Genre musical
+                    </label>
+                    <select
+                        id="genreFilter"
+                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                    >
+                        <option value="">Tous les genres</option>
+                        {genres.map((genre) => (
+                            <option value={genre}>{genre}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="heureFilter" class="mb-2 block text-sm font-medium text-zinc-700">
+                        Horaire
+                    </label>
+                    <select
+                        id="heureFilter"
+                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                    >
+                        <option value="">Tous les horaires</option>
+                        {heures.map((heure) => (
+                            <option value={heure}>{heure}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="sceneFilter" class="mb-2 block text-sm font-medium text-zinc-700">
+                        Scène
+                    </label>
+                    <select
+                        id="sceneFilter"
+                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                    >
+                        <option value="">Toutes les scènes</option>
+                        {scenes.map((scene) => (
+                            <option value={scene}>{scene}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            <button
+                id="resetFilters"
+                class="mt-4 rounded-full border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100"
+            >
+                Réinitialiser les filtres
+            </button>
+        </section>
+
+        <section class="space-y-10">
+            {jours.map(([jourUrl, data]) => (
+                <section data-jour-section>
+                    <h2 class="mb-5 text-2xl font-bold capitalize text-zinc-900">
+                        <a href={`/programmes/jour/${jourUrl}`} class="underline">
+                            {data.label}
+                        </a>
+                    </h2>
+
+                    <div class="space-y-4">
+                        {data.reps.map((rep) => (
+                            <ProgrammeItem representation={rep} />
+                        ))}
+                    </div>
+                </section>
+            ))}
+        </section>
+    </main>
+
+    <script>
+        const genreFilter = document.getElementById('genreFilter');
+        const heureFilter = document.getElementById('heureFilter');
+        const sceneFilter = document.getElementById('sceneFilter');
+        const resetFilters = document.getElementById('resetFilters');
+
+        const items = document.querySelectorAll('[data-programme-item]');
+        const sections = document.querySelectorAll('[data-jour-section]');
+
+        function appliquerFiltres() {
+            const genreValue = genreFilter.value;
+            const heureValue = heureFilter.value;
+            const sceneValue = sceneFilter.value;
+
+            items.forEach((item) => {
+                const matchGenre = !genreValue || item.dataset.genre === genreValue;
+                const matchHeure = !heureValue || item.dataset.heure === heureValue;
+                const matchScene = !sceneValue || item.dataset.scene === sceneValue;
+
+                if (matchGenre && matchHeure && matchScene) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            sections.forEach((section) => {
+                const visibleItems = [...section.querySelectorAll('[data-programme-item]')]
+                    .some((item) => item.style.display !== 'none');
+
+                section.style.display = visibleItems ? '' : 'none';
+            });
+        }
+
+        genreFilter.addEventListener('change', appliquerFiltres);
+        heureFilter.addEventListener('change', appliquerFiltres);
+        sceneFilter.addEventListener('change', appliquerFiltres);
+
+        resetFilters.addEventListener('click', () => {
+            genreFilter.value = '';
+            heureFilter.value = '';
+            sceneFilter.value = '';
+            appliquerFiltres();
+        });
+    </script>
+</Layout>
