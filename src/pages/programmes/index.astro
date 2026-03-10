@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProgrammeItem from '../../components/ProgrammeItem.astro';
+import { allRepresentationsSorted } from '../../js/backend.mjs';
+
+const representations = await allRepresentationsSorted();
+
+const programmeParJour = new Map();
+
+for (const rep of representations) {
+    const date = new Date(rep.date_heure);
+
+    const jour = date.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    if (!programmeParJour.has(jour)) {
+        programmeParJour.set(jour, []);
+    }
+
+    programmeParJour.get(jour).push(rep);
+}
+
+const jours = Array.from(programmeParJour.entries());
+---
+
+<Layout title="Programme">
+    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Festicloze 2026
+            </p>
+
+            <h1 class="text-4xl font-bold md:text-5xl">
+                Le programme du festival
+            </h1>
+
+            <p class="mt-4 max-w-2xl text-zinc-200">
+                Retrouvez tous les artistes, leurs dates de représentation et les scènes du festival.
+            </p>
+
+            <div class="mt-6 flex flex-wrap gap-4">
+                <a
+                    href="/programme.pdf"
+                    class="rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"
+                >
+                    Télécharger le programme PDF
+                </a>
+            </div>
+        </section>
+
+        <section class="space-y-10">
+            {jours.map(([jour, reps]) => (
+                <div>
+                    <h2 class="mb-5 text-2xl font-bold capitalize text-zinc-900">
+                        {jour}
+                    </h2>
+
+                    <div class="space-y-4">
+                        {reps.map((rep) => (
+                            <ProgrammeItem representation={rep} />
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </section>
+    </main>
+</Layout>
