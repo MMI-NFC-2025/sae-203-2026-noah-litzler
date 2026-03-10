@@ -1,0 +1,77 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ProgrammeItem from '../../../components/ProgrammeItem.astro';
+import { allRepresentations } from '../../../js/backend.mjs';
+
+function formatJourUrl(dateString) {
+    const date = new Date(dateString);
+    const annee = date.getFullYear();
+    const mois = String(date.getMonth() + 1).padStart(2, '0');
+    const jour = String(date.getDate()).padStart(2, '0');
+    return `${annee}-${mois}-${jour}`;
+}
+
+function formatJourAffichage(jour) {
+    const date = new Date(jour);
+    return date.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+}
+
+export async function getStaticPaths() {
+    const representations = await allRepresentations();
+
+    const jours = [
+        ...new Set(representations.map((rep) => formatJourUrl(rep.date_heure)))
+    ];
+
+    return jours.map((jour) => ({
+        params: { jour }
+    }));
+}
+
+const { jour } = Astro.params;
+
+const allReps = await allRepresentations();
+
+const representations = allReps.filter(
+    (rep) => formatJourUrl(rep.date_heure) === jour
+);
+
+const jourAffichage = formatJourAffichage(jour);
+---
+
+<Layout title={`Programme - ${jourAffichage}`}>
+    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <a href="/programmes" class="mb-6 inline-block text-sm underline">
+            ← Retour au programme
+        </a>
+
+        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Programme par jour
+            </p>
+
+            <h1 class="text-4xl font-bold capitalize md:text-5xl">
+                {jourAffichage}
+            </h1>
+
+            <p class="mt-4 max-w-2xl text-zinc-200">
+                Retrouvez toutes les représentations prévues pour cette journée.
+            </p>
+        </section>
+
+        {representations.length > 0 ? (
+            <section class="space-y-4">
+                {representations.map((rep) => (
+                    <ProgrammeItem representation={rep} />
+                ))}
+            </section>
+        ) : (
+            <p>Aucune représentation pour cette journée.</p>
+        )}
+    </main>
+</Layout>

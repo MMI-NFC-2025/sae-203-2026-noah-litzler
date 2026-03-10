@@ -1,0 +1,74 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { allArtistes, allArtistesByGenre, getImageUrl } from '../../../js/backend.mjs';
+
+export async function getStaticPaths() {
+    const artistes = await allArtistes();
+
+    const genres = [...new Set(artistes.map((artiste) => artiste.genre_musical))];
+
+    return genres.map((genre) => ({
+        params: { genre: encodeURIComponent(genre) }
+    }));
+}
+
+const genre = decodeURIComponent(Astro.params.genre);
+const artistes = await allArtistesByGenre(genre);
+---
+
+<Layout title={`Artistes - ${genre}`}>
+    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <a
+            href="/artistes"
+            class="mb-6 inline-block text-sm font-medium text-zinc-700 underline"
+        >
+            ← Retour aux artistes
+        </a>
+
+        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Festicloze 2026
+            </p>
+
+            <h1 class="text-4xl font-bold md:text-5xl">
+                Artistes : {genre}
+            </h1>
+
+            <p class="mt-4 max-w-2xl text-zinc-200">
+                Retrouvez tous les artistes du festival appartenant au genre musical <strong>{genre}</strong>.
+            </p>
+        </section>
+
+        {artistes.length > 0 ? (
+            <section class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {artistes.map((artiste) => (
+                    <article class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+                        <a href={`/artistes/${artiste.id}`}>
+                            {getImageUrl(artiste, 'photo_principale') && (
+                                <img
+                                    src={getImageUrl(artiste, 'photo_principale')}
+                                    alt={artiste.nom}
+                                    class="mb-4 h-72 w-full rounded-xl object-cover"
+                                />
+                            )}
+
+                            <h2 class="text-2xl font-semibold text-zinc-900">
+                                {artiste.nom}
+                            </h2>
+                        </a>
+
+                        <p class="mt-2 text-sm text-zinc-600">
+                            <strong>Genre :</strong> {artiste.genre_musical}
+                        </p>
+
+                        <p class="mt-3 text-zinc-700">
+                            {artiste.description}
+                        </p>
+                    </article>
+                ))}
+            </section>
+        ) : (
+            <p class="text-zinc-700">Aucun artiste trouvé pour ce genre musical.</p>
+        )}
+    </main>
+</Layout>

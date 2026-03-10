@@ -14,14 +14,22 @@ const heure = date.toLocaleTimeString('fr-FR', {
 });
 
 const imageArtiste = artiste ? getImageUrl(artiste, 'photo_principale') : '';
+const genre = artiste?.genre_musical || '';
+const nomScene = scene?.nom || '';
 ---
 
-<article class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+<article
+    data-programme-item
+    data-genre={genre}
+    data-scene={nomScene}
+    data-heure={heure}
+    class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+>
     <div class="flex flex-col gap-4 md:flex-row">
         {imageArtiste && (
             <img
                 src={imageArtiste}
-                alt={artiste.nom}
+                alt={artiste?.nom}
                 class="h-56 w-full rounded-xl object-cover md:h-36 md:w-36"
             />
         )}

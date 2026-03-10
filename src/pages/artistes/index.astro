@@ -27,27 +27,61 @@ for (const rep of representations) {
 }
 
 const artistes = Array.from(artistesMap.values());
+
+const genres = [...new Set(artistes.map((artiste) => artiste.genre_musical))];
 ---
 
 <Layout title="Artistes">
-    <main class="container">
-        <h1>Les artistes</h1>
+    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+                Festicloze 2026
+            </p>
 
-        <section class="grille-artistes">
+            <h1 class="text-4xl font-bold md:text-5xl">
+                Les artistes
+            </h1>
+
+            <p class="mt-4 max-w-2xl text-zinc-200">
+                Découvrez les artistes programmés au festival, leurs dates de représentation et les scènes sur lesquelles ils se produisent.
+            </p>
+        </section>
+
+        <div class="mb-8 flex flex-wrap gap-3">
+            {genres.map((genre) => (
+                <a
+                    href={`/artistes/genre/${encodeURIComponent(genre)}`}
+                    class="rounded-full border border-zinc-300 px-4 py-2 text-sm transition hover:bg-zinc-100"
+                >
+                    {genre}
+                </a>
+            ))}
+        </div>
+
+        <section class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {artistes.map((artiste) => (
-                <article class="carte-artiste">
+                <article class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
                     <a href={`/artistes/${artiste.id}`}>
                         {artiste.photo_url && (
-                            <img src={artiste.photo_url} alt={artiste.nom} />
+                            <img
+                                src={artiste.photo_url}
+                                alt={artiste.nom}
+                                class="mb-4 h-72 w-full rounded-xl object-cover"
+                            />
                         )}
-                        <h2>{artiste.nom}</h2>
+
+                        <h2 class="text-2xl font-semibold text-zinc-900">
+                            {artiste.nom}
+                        </h2>
                     </a>
 
-                    <p><strong>Genre :</strong> {artiste.genre_musical}</p>
+                    <p class="mt-2 text-sm text-zinc-600">
+                        <strong>Genre :</strong> {artiste.genre_musical}
+                    </p>
 
-                    <ul>
+                    <ul class="mt-4 space-y-2 text-sm text-zinc-700">
                         {artiste.dates.map((date) => (
-                            <li>
+                            <li class="rounded-lg bg-zinc-50 px-3 py-2">
                                 {new Date(date.date_heure).toLocaleDateString('fr-FR')} à {new Date(date.date_heure).toLocaleTimeString('fr-FR', {
                                     hour: '2-digit',
                                     minute: '2-digit'
@@ -61,45 +95,3 @@ const artistes = Array.from(artistesMap.values());
         </section>
     </main>
 </Layout>
-
-<style>
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 0;
-}
-
-h1 {
-    margin-bottom: 2rem;
-}
-
-.grille-artistes {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-}
-
-.carte-artiste {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 12px;
-    background: white;
-}
-
-.carte-artiste img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-
-.carte-artiste h2 {
-    margin: 0 0 0.5rem 0;
-}
-
-.carte-artiste ul {
-    padding-left: 1.2rem;
-}
-</style>

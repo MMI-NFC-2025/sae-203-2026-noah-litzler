@@ -34,6 +34,15 @@ export async function oneArtisteID(id) {
     return record;
 }
 
+// toutes les représentations
+export async function allRepresentations() {
+    const records = await pb.collection('representations').getFullList({
+        sort: 'date_heure',
+        expand: 'artiste,scene'
+    });
+    return records;
+}
+
 // Toutes les représentations triées par date
 export async function allRepresentationsSorted() {
     const records = await pb.collection('representations').getFullList({
@@ -73,6 +82,15 @@ export async function allRepresentationsByScene(id) {
         filter: `scene = "${id}"`,
         sort: 'date_heure',
         expand: 'artiste,scene'
+    });
+    return records;
+}
+
+// Tous les artistes d’un genre musical triés par ordre alphabétique
+export async function allArtistesByGenre(genre) {
+    const records = await pb.collection('artistes').getFullList({
+        filter: `genre_musical = "${genre}"`,
+        sort: 'nom'
     });
     return records;
 }
