@@ -20,55 +20,55 @@ const artistes = await allArtistesByGenre(genre);
     <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <a
             href="/artistes"
-            class="mb-6 inline-block text-sm font-medium text-zinc-700 underline"
+            class="mb-6 inline-block text-sm font-medium text-gold hover:underline"
         >
             ← Retour aux artistes
         </a>
 
-        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
-            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+        <section class="mb-10 rounded-3xl border border-dark-border bg-dark-card px-6 py-10 md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
                 Festicloze 2026
             </p>
 
-            <h1 class="text-4xl font-bold md:text-5xl">
+            <h1 class="font-heading text-4xl font-bold text-cream md:text-5xl">
                 Artistes : {genre}
             </h1>
 
-            <p class="mt-4 max-w-2xl text-zinc-200">
-                Retrouvez tous les artistes du festival appartenant au genre musical <strong>{genre}</strong>.
+            <p class="mt-4 max-w-2xl text-cream-muted">
+                Retrouvez tous les artistes du festival appartenant au genre musical <strong class="text-cream">{genre}</strong>.
             </p>
         </section>
 
         {artistes.length > 0 ? (
             <section class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {artistes.map((artiste) => (
-                    <article class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+                    <article class="group rounded-2xl border border-dark-border bg-dark-card p-4 transition hover:border-gold/40">
                         <a href={`/artistes/${artiste.id}`}>
                             {getImageUrl(artiste, 'photo_principale') && (
                                 <img
                                     src={getImageUrl(artiste, 'photo_principale')}
                                     alt={artiste.nom}
-                                    class="mb-4 h-72 w-full rounded-xl object-cover"
+                                    class="mb-4 h-72 w-full rounded-xl object-cover transition group-hover:brightness-110"
                                 />
                             )}
 
-                            <h2 class="text-2xl font-semibold text-zinc-900">
+                            <h2 class="font-heading text-2xl font-semibold text-cream group-hover:text-gold">
                                 {artiste.nom}
                             </h2>
                         </a>
 
-                        <p class="mt-2 text-sm text-zinc-600">
-                            <strong>Genre :</strong> {artiste.genre_musical}
+                        <p class="mt-2 text-sm text-cream-muted">
+                            <strong class="text-gold">Genre :</strong> {artiste.genre_musical}
                         </p>
 
-                        <p class="mt-3 text-zinc-700">
+                        <p class="mt-3 text-cream-muted">
                             {artiste.description}
                         </p>
                     </article>
                 ))}
             </section>
         ) : (
-            <p class="text-zinc-700">Aucun artiste trouvé pour ce genre musical.</p>
+            <p class="text-cream-muted">Aucun artiste trouvé pour ce genre musical.</p>
         )}
     </main>
 </Layout>

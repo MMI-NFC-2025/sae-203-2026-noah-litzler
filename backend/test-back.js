@@ -50,14 +50,14 @@ try {
 }
 
 try {
-    const record = await oneSceneID('7gd83rgl8ofgitf');
+    const record = await oneSceneID('sbshqnx6d7eidul');
     console.table(record);
 } catch (e) {
     console.error(e);
 }
 
 try {
-    const records = await allArtistesBySceneId('1brbo728wqbmxmw');
+    const records = await allArtistesBySceneId('i336dh89f258ao7');
     console.table(records);
 } catch (e) {
     console.error(e);
@@ -105,7 +105,7 @@ try {
 }
 
 try {
-    const record = await updateSceneById('1brbo728wqbmxmw', {
+    const record = await updateSceneById('i336dh89f258ao7', {
         capacite: 500
     });
     console.table(record);

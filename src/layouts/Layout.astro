@@ -1,8 +1,10 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import '../styles/global.css';
 
 const { title = 'Festicloze' } = Astro.props;
+const pageTitle = title.includes('Festicloze') ? title : `${title} — Festicloze`;
 ---
 
 <!DOCTYPE html>
@@ -10,10 +12,21 @@ const { title = 'Festicloze' } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <meta
+      name="description"
+      content="Festicloze — Festival de musique baroque et patrimoniale à Montbéliard, du 20 au 23 décembre."
+    />
+    <meta name="theme-color" content="#0c0c0c" />
+    <title>{pageTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="bg-zinc-50 text-zinc-900">
+  <body>
     <Header />
     <slot />
     <Footer />

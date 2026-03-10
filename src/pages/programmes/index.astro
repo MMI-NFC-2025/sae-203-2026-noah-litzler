@@ -61,42 +61,44 @@ const heures = [
 
 <Layout title="Programme">
     <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
-            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
-                Festicloze 2026
-            </p>
+        <section class="mb-10 overflow-hidden rounded-3xl border border-dark-border bg-dark-card">
+            <div class="px-8 py-12 md:px-14">
+                <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
+                    Festicloze 2026
+                </p>
 
-            <h1 class="text-4xl font-bold md:text-5xl">
-                Le programme du festival
-            </h1>
+                <h1 class="font-heading text-4xl font-bold text-cream md:text-5xl">
+                    Le programme du festival
+                </h1>
 
-            <p class="mt-4 max-w-2xl text-zinc-200">
-                Retrouvez tous les artistes programmés, classés par jour, avec des filtres par genre, horaire et scène.
-            </p>
+                <p class="mt-4 max-w-2xl text-cream-muted">
+                    Retrouvez tous les artistes programmés, classés par jour, avec des filtres par genre, horaire et scène.
+                </p>
 
-            <div class="mt-6">
-                <a
-                    href="/programme.pdf"
-                    class="inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"
-                >
-                    Télécharger le programme PDF
-                </a>
+                <div class="mt-6">
+                    <a
+                        href="/programme.pdf"
+                        class="inline-flex rounded-full bg-gold px-5 py-3 text-sm font-semibold text-dark transition-colors hover:bg-gold-light"
+                    >
+                        Télécharger le programme PDF
+                    </a>
+                </div>
             </div>
         </section>
 
-        <section class="mb-10 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-            <h2 class="mb-4 text-2xl font-semibold text-zinc-900">
+        <section class="mb-10 rounded-2xl border border-dark-border bg-dark-card p-5">
+            <h2 class="mb-4 font-heading text-2xl font-semibold text-cream">
                 Filtrer le programme
             </h2>
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div>
-                    <label for="genreFilter" class="mb-2 block text-sm font-medium text-zinc-700">
+                    <label for="genreFilter" class="mb-2 block text-sm font-medium text-gold">
                         Genre musical
                     </label>
                     <select
                         id="genreFilter"
-                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                        class="w-full rounded-xl border border-dark-border bg-dark px-4 py-3 text-cream"
                     >
                         <option value="">Tous les genres</option>
                         {genres.map((genre) => (
@@ -106,12 +108,12 @@ const heures = [
                 </div>
 
                 <div>
-                    <label for="heureFilter" class="mb-2 block text-sm font-medium text-zinc-700">
+                    <label for="heureFilter" class="mb-2 block text-sm font-medium text-gold">
                         Horaire
                     </label>
                     <select
                         id="heureFilter"
-                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                        class="w-full rounded-xl border border-dark-border bg-dark px-4 py-3 text-cream"
                     >
                         <option value="">Tous les horaires</option>
                         {heures.map((heure) => (
@@ -121,12 +123,12 @@ const heures = [
                 </div>
 
                 <div>
-                    <label for="sceneFilter" class="mb-2 block text-sm font-medium text-zinc-700">
+                    <label for="sceneFilter" class="mb-2 block text-sm font-medium text-gold">
                         Scène
                     </label>
                     <select
                         id="sceneFilter"
-                        class="w-full rounded-xl border border-zinc-300 px-4 py-3"
+                        class="w-full rounded-xl border border-dark-border bg-dark px-4 py-3 text-cream"
                     >
                         <option value="">Toutes les scènes</option>
                         {scenes.map((scene) => (
@@ -138,7 +140,7 @@ const heures = [
 
             <button
                 id="resetFilters"
-                class="mt-4 rounded-full border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100"
+                class="mt-4 rounded-full border border-dark-border px-4 py-2 text-sm text-cream-muted transition-colors hover:border-gold hover:text-gold"
             >
                 Réinitialiser les filtres
             </button>
@@ -147,14 +149,14 @@ const heures = [
         <section class="space-y-10">
             {jours.map(([jourUrl, data]) => (
                 <section data-jour-section>
-                    <h2 class="mb-5 text-2xl font-bold capitalize text-zinc-900">
-                        <a href={`/programmes/jour/${jourUrl}`} class="underline">
+                    <h2 class="mb-5 font-heading text-2xl font-bold capitalize text-cream">
+                        <a href={`/programmes/jour/${jourUrl}`} class="transition-colors hover:text-gold">
                             {data.label}
                         </a>
                     </h2>
 
                     <div class="space-y-4">
-                        {data.reps.map((rep) => (
+                        {data.reps.map((rep: any) => (
                             <ProgrammeItem representation={rep} />
                         ))}
                     </div>
@@ -164,48 +166,45 @@ const heures = [
     </main>
 
     <script>
-        const genreFilter = document.getElementById('genreFilter');
-        const heureFilter = document.getElementById('heureFilter');
-        const sceneFilter = document.getElementById('sceneFilter');
-        const resetFilters = document.getElementById('resetFilters');
+        const genreFilter  = document.getElementById('genreFilter')  as HTMLSelectElement | null;
+        const heureFilter  = document.getElementById('heureFilter')  as HTMLSelectElement | null;
+        const sceneFilter  = document.getElementById('sceneFilter')  as HTMLSelectElement | null;
+        const resetFilters = document.getElementById('resetFilters') as HTMLButtonElement | null;
 
-        const items = document.querySelectorAll('[data-programme-item]');
-        const sections = document.querySelectorAll('[data-jour-section]');
+        const items    = document.querySelectorAll<HTMLElement>('[data-programme-item]');
+        const sections = document.querySelectorAll<HTMLElement>('[data-jour-section]');
 
-        function appliquerFiltres() {
-            const genreValue = genreFilter.value;
-            const heureValue = heureFilter.value;
-            const sceneValue = sceneFilter.value;
+        if (genreFilter && heureFilter && sceneFilter && resetFilters) {
+            function appliquerFiltres() {
+                const genreValue = genreFilter!.value;
+                const heureValue = heureFilter!.value;
+                const sceneValue = sceneFilter!.value;
 
-            items.forEach((item) => {
-                const matchGenre = !genreValue || item.dataset.genre === genreValue;
-                const matchHeure = !heureValue || item.dataset.heure === heureValue;
-                const matchScene = !sceneValue || item.dataset.scene === sceneValue;
+                items.forEach((item) => {
+                    const matchGenre = !genreValue || item.dataset.genre === genreValue;
+                    const matchHeure = !heureValue || item.dataset.heure === heureValue;
+                    const matchScene = !sceneValue || item.dataset.scene === sceneValue;
 
-                if (matchGenre && matchHeure && matchScene) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+                    item.style.display = (matchGenre && matchHeure && matchScene) ? '' : 'none';
+                });
 
-            sections.forEach((section) => {
-                const visibleItems = [...section.querySelectorAll('[data-programme-item]')]
-                    .some((item) => item.style.display !== 'none');
+                sections.forEach((section) => {
+                    const hasVisible = [...section.querySelectorAll<HTMLElement>('[data-programme-item]')]
+                        .some((item) => item.style.display !== 'none');
+                    section.style.display = hasVisible ? '' : 'none';
+                });
+            }
 
-                section.style.display = visibleItems ? '' : 'none';
+            genreFilter.addEventListener('change', appliquerFiltres);
+            heureFilter.addEventListener('change', appliquerFiltres);
+            sceneFilter.addEventListener('change', appliquerFiltres);
+
+            resetFilters.addEventListener('click', () => {
+                genreFilter.value  = '';
+                heureFilter.value  = '';
+                sceneFilter.value  = '';
+                appliquerFiltres();
             });
         }
-
-        genreFilter.addEventListener('change', appliquerFiltres);
-        heureFilter.addEventListener('change', appliquerFiltres);
-        sceneFilter.addEventListener('change', appliquerFiltres);
-
-        resetFilters.addEventListener('click', () => {
-            genreFilter.value = '';
-            heureFilter.value = '';
-            sceneFilter.value = '';
-            appliquerFiltres();
-        });
     </script>
 </Layout>

@@ -23,25 +23,25 @@ const representations = await allRepresentationsByScene(id);
 
 <Layout title={`Programme - ${scene.nom}`}>
     <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <a href="/programmes" class="mb-6 inline-block text-sm underline">
+        <a href="/programmes" class="mb-6 inline-block text-sm font-medium text-gold hover:underline">
             ← Retour au programme
         </a>
 
-        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
-            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+        <section class="mb-10 rounded-3xl border border-dark-border bg-dark-card px-6 py-10 md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
                 Programme par scène
             </p>
 
-            <h1 class="text-4xl font-bold md:text-5xl">
+            <h1 class="font-heading text-4xl font-bold text-cream md:text-5xl">
                 {scene.nom}
             </h1>
 
-            <p class="mt-4 max-w-2xl text-zinc-200">
+            <p class="mt-4 max-w-2xl text-cream-muted">
                 Retrouvez tous les artistes programmés sur cette scène, triés par date.
             </p>
 
-            <p class="mt-4 text-zinc-300">
-                <strong>Localisation :</strong> {scene.localisation}
+            <p class="mt-4 text-cream-muted">
+                <strong class="text-gold">Localisation :</strong> {scene.localisation}
             </p>
         </section>
 
@@ -52,7 +52,7 @@ const representations = await allRepresentationsByScene(id);
                 ))}
             </section>
         ) : (
-            <p>Aucune représentation sur cette scène.</p>
+            <p class="text-cream-muted">Aucune représentation sur cette scène.</p>
         )}
     </main>
 </Layout>

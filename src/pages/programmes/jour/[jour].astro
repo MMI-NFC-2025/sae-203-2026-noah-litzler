@@ -3,7 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import ProgrammeItem from '../../../components/ProgrammeItem.astro';
 import { allRepresentations } from '../../../js/backend.mjs';
 
-function formatJourUrl(dateString) {
+function formatJourUrl(dateString: string) {
     const date = new Date(dateString);
     const annee = date.getFullYear();
     const mois = String(date.getMonth() + 1).padStart(2, '0');
@@ -11,7 +11,7 @@ function formatJourUrl(dateString) {
     return `${annee}-${mois}-${jour}`;
 }
 
-function formatJourAffichage(jour) {
+function formatJourAffichage(jour: string) {
     const date = new Date(jour);
     return date.toLocaleDateString('fr-FR', {
         weekday: 'long',
@@ -46,20 +46,20 @@ const jourAffichage = formatJourAffichage(jour);
 
 <Layout title={`Programme - ${jourAffichage}`}>
     <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <a href="/programmes" class="mb-6 inline-block text-sm underline">
+        <a href="/programmes" class="mb-6 inline-block text-sm font-medium text-gold hover:underline">
             ← Retour au programme
         </a>
 
-        <section class="mb-10 rounded-3xl bg-zinc-900 px-6 py-10 text-white md:px-10">
-            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
+        <section class="mb-10 rounded-3xl border border-dark-border bg-dark-card px-6 py-10 md:px-10">
+            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
                 Programme par jour
             </p>
 
-            <h1 class="text-4xl font-bold capitalize md:text-5xl">
+            <h1 class="font-heading text-4xl font-bold capitalize text-cream md:text-5xl">
                 {jourAffichage}
             </h1>
 
-            <p class="mt-4 max-w-2xl text-zinc-200">
+            <p class="mt-4 max-w-2xl text-cream-muted">
                 Retrouvez toutes les représentations prévues pour cette journée.
             </p>
         </section>
@@ -71,7 +71,7 @@ const jourAffichage = formatJourAffichage(jour);
                 ))}
             </section>
         ) : (
-            <p>Aucune représentation pour cette journée.</p>
+            <p class="text-cream-muted">Aucune représentation pour cette journée.</p>
         )}
     </main>
 </Layout>

@@ -23,7 +23,7 @@ const nomScene = scene?.nom || '';
     data-genre={genre}
     data-scene={nomScene}
     data-heure={heure}
-    class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
+    class="rounded-2xl border border-dark-border bg-dark-card p-4 transition hover:border-gold/40"
 >
     <div class="flex flex-col gap-4 md:flex-row">
         {imageArtiste && (
@@ -36,38 +36,38 @@ const nomScene = scene?.nom || '';
 
         <div class="flex-1">
             <div class="mb-3 flex flex-wrap items-center gap-2">
-                <span class="rounded-full bg-black px-3 py-1 text-sm text-white">
+                <span class="rounded-full bg-gold px-3 py-1 text-sm font-semibold text-dark">
                     {heure}
                 </span>
 
                 {scene && (
                     <a
                         href={`/programmes/scene/${scene.id}`}
-                        class="rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-700"
+                        class="rounded-full border border-dark-border bg-dark px-3 py-1 text-sm text-cream-muted transition hover:text-gold"
                     >
                         {scene.nom}
                     </a>
                 )}
 
                 {artiste?.genre_musical && (
-                    <span class="rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-700">
+                    <span class="rounded-full border border-dark-border bg-dark px-3 py-1 text-sm text-cream-muted">
                         {artiste.genre_musical}
                     </span>
                 )}
             </div>
 
-            <h3 class="text-2xl font-semibold text-zinc-900">
+            <h3 class="font-heading text-2xl font-semibold text-cream">
                 {artiste ? artiste.nom : 'Artiste inconnu'}
             </h3>
 
             {scene && (
-                <p class="mt-2 text-sm text-zinc-600">
-                    <strong>Lieu :</strong> {scene.localisation}
+                <p class="mt-2 text-sm text-cream-muted">
+                    <strong class="text-gold">Lieu :</strong> {scene.localisation}
                 </p>
             )}
 
             {representation.description && (
-                <p class="mt-3 text-zinc-700">
+                <p class="mt-3 text-cream-muted">
                     {representation.description}
                 </p>
             )}
@@ -75,7 +75,7 @@ const nomScene = scene?.nom || '';
             {artiste && (
                 <a
                     href={`/artistes/${artiste.id}`}
-                    class="mt-4 inline-block text-sm font-medium text-black underline"
+                    class="mt-4 inline-block text-sm font-medium text-gold underline-offset-2 hover:underline"
                 >
                     Voir la fiche artiste
                 </a>

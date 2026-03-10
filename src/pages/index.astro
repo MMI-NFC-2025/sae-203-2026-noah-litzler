@@ -7,18 +7,17 @@ import {
     getImageUrl
 } from '../js/backend.mjs';
 
-const artistes = (await allArtistesAlpha()).slice(0, 3);
+const artistes = await allArtistesAlpha();
 const scenes = (await allScenesSorted()).slice(0, 2);
-const representations = (await allRepresentationsSorted()).slice(0, 4);
+const representationsAll = await allRepresentationsSorted();
 
 const joursUniques = [
     ...new Set(
-        representations.map((rep) =>
+        representationsAll.map((rep) =>
             new Date(rep.date_heure).toLocaleDateString('fr-FR', {
                 weekday: 'long',
                 day: 'numeric',
                 month: 'long',
-                year: 'numeric'
             })
         )
     )
@@ -34,167 +33,207 @@ const partenaires = [
 
 <Layout title="Festicloze 2026">
     <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <section class="rounded-3xl bg-zinc-900 px-6 py-12 text-white md:px-10 lg:px-12">
-            <p class="mb-3 text-sm uppercase tracking-[0.2em] text-zinc-300">
-                Festival Festicloze 2026
-            </p>
 
-            <h1 class="max-w-3xl text-4xl font-bold md:text-5xl lg:text-6xl">
-                Un festival musical entre patrimoine, lumière et émotions
-            </h1>
+        <section class="overflow-hidden rounded-3xl border border-dark-border bg-dark-card">
+            <div class="flex flex-col lg:flex-row">
 
-            <p class="mt-5 max-w-2xl text-zinc-200">
-                Découvrez une programmation unique mêlant artistes invités, scènes emblématiques
-                et concerts répartis sur plusieurs jours au cœur de Montbéliard.
-            </p>
+                <div class="flex flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-14">
+                    <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
+                        Festival Festicloze 2026
+                    </p>
+                    <h1 class="font-heading text-4xl font-bold text-cream md:text-5xl lg:text-[3.2rem] lg:leading-tight">
+                        Un festival musical entre patrimoine, lumière et émotions
+                    </h1>
+                    <p class="mt-5 max-w-md text-cream-muted">
+                        Découvrez une programmation unique mêlant artistes invités, scènes
+                        emblématiques et concerts répartis sur plusieurs jours au cœur de Montbéliard.
+                    </p>
+                    <p class="mt-2 text-sm text-warm-gray">Du 20 au 23 décembre · Montbéliard</p>
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a
+                            href="#"
+                            class="rounded-full bg-gold px-5 py-3 text-sm font-semibold text-dark transition-colors hover:bg-gold-light"
+                        >
+                            Accéder à la billetterie
+                        </a>
+                        <a
+                            href="/programmes"
+                            class="rounded-full border border-cream/30 px-5 py-3 text-sm font-semibold text-cream transition-colors hover:border-gold hover:text-gold"
+                        >
+                            Voir le programme
+                        </a>
+                    </div>
+                </div>
 
-            <div class="mt-8 flex flex-wrap gap-4">
-                <a
-                    href="#"
-                    class="rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-zinc-200"
-                >
-                    Accéder à la billetterie
-                </a>
+                <div class="lg:w-1/2">
+                    <img
+                        src="/imageaccueil.avif"
+                        alt="Ambiance Festicloze"
+                        class="h-64 w-full object-cover lg:h-full lg:min-h-125"
+                    />
+                </div>
+            </div>
+        </section>
 
+        <section class="mt-8">
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-dark-border bg-dark-card px-6 py-4">
+                <p class="shrink-0 text-xs font-semibold uppercase tracking-[0.15em] text-gold">Dates</p>
+                {joursUniques.map((jour) => (
+                    <span class="capitalize text-sm text-cream-muted">{jour}</span>
+                ))}
                 <a
                     href="/programmes"
-                    class="rounded-full border border-white px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-black"
+                    class="ml-auto shrink-0 rounded-full border border-gold/40 px-4 py-1.5 text-sm text-gold transition-all hover:bg-gold hover:text-dark"
                 >
-                    Voir le programme
+                    Programme →
                 </a>
             </div>
         </section>
 
-        <section class="mt-12">
-            <h2 class="mb-6 text-3xl font-bold text-zinc-900">Dates clés du festival</h2>
+        <section class="mt-16">
+            <div class="mb-6 flex items-center justify-between">
+                <h2 class="font-heading text-3xl font-bold text-cream md:text-4xl">Artistes invités</h2>
+                <div class="flex items-center gap-3">
+                    <button
+                        id="carouselPrev"
+                        aria-label="Artiste précédent"
+                        class="flex h-10 w-10 items-center justify-center rounded-full border border-dark-border text-cream-muted transition-colors hover:border-gold hover:text-gold"
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button
+                        id="carouselNext"
+                        aria-label="Artiste suivant"
+                        class="flex h-10 w-10 items-center justify-center rounded-full border border-dark-border text-cream-muted transition-colors hover:border-gold hover:text-gold"
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                    <a href="/artistes" class="hidden text-sm font-medium text-gold transition-colors hover:text-gold-light sm:block">
+                        Tous les artistes
+                    </a>
+                </div>
+            </div>
 
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {joursUniques.map((jour) => (
-                    <article class="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-                        <p class="capitalize text-lg font-semibold text-zinc-900">{jour}</p>
-                    </article>
-                ))}
+            <div class="overflow-hidden" id="carouselWrapper">
+                <div class="flex gap-5 transition-transform duration-500 ease-in-out" id="carouselInner">
+                    {artistes.map((artiste) => (
+                        <article class="group w-64 shrink-0 overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors duration-200 hover:border-gold/40 sm:w-72">
+                            <a href={`/artistes/${artiste.id}`}>
+                                <div class="overflow-hidden">
+                                    {getImageUrl(artiste, 'photo_principale') ? (
+                                        <img
+                                            src={getImageUrl(artiste, 'photo_principale')}
+                                            alt={artiste.nom}
+                                            class="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    ) : (
+                                        <div class="h-56 w-full bg-dark-surface" />
+                                    )}
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-heading text-xl font-semibold text-cream transition-colors duration-200 group-hover:text-gold">
+                                        {artiste.nom}
+                                    </h3>
+                                </div>
+                            </a>
+                            <div class="px-4 pb-4">
+                                <span class="rounded-full border border-gold/30 px-3 py-1 text-xs text-gold">
+                                    {artiste.genre_musical}
+                                </span>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </div>
+
+            <div class="mt-5 text-center sm:hidden">
+                <a href="/artistes" class="text-sm font-medium text-gold">Tous les artistes →</a>
             </div>
         </section>
 
-        <section class="mt-14">
+        <section class="mt-16">
             <div class="mb-6 flex items-center justify-between">
-                <h2 class="text-3xl font-bold text-zinc-900">Aperçu du programme</h2>
-                <a href="/programmes" class="text-sm font-medium underline">
-                    Tout voir
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {representations.map((rep) => (
-                    <article class="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-                        <p class="text-sm text-zinc-500">
-                            {new Date(rep.date_heure).toLocaleDateString('fr-FR')} à {new Date(rep.date_heure).toLocaleTimeString('fr-FR', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}
-                        </p>
-
-                        <h3 class="mt-2 text-2xl font-semibold text-zinc-900">
-                            {rep.expand?.artiste?.nom}
-                        </h3>
-
-                        <p class="mt-2 text-zinc-700">
-                            <strong>Scène :</strong> {rep.expand?.scene?.nom}
-                        </p>
-
-                        {rep.description && (
-                            <p class="mt-3 text-zinc-700">{rep.description}</p>
-                        )}
-                    </article>
-                ))}
-            </div>
-        </section>
-
-        <section class="mt-14">
-            <div class="mb-6 flex items-center justify-between">
-                <h2 class="text-3xl font-bold text-zinc-900">Artistes invités</h2>
-                <a href="/artistes" class="text-sm font-medium underline">
-                    Tous les artistes
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {artistes.map((artiste) => (
-                    <article class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
-                        <a href={`/artistes/${artiste.id}`}>
-                            {getImageUrl(artiste, 'photo_principale') && (
-                                <img
-                                    src={getImageUrl(artiste, 'photo_principale')}
-                                    alt={artiste.nom}
-                                    class="mb-4 h-72 w-full rounded-xl object-cover"
-                                />
-                            )}
-
-                            <h3 class="text-2xl font-semibold text-zinc-900">
-                                {artiste.nom}
-                            </h3>
-                        </a>
-
-                        <p class="mt-2 text-sm text-zinc-600">
-                            {artiste.genre_musical}
-                        </p>
-
-                        <p class="mt-3 line-clamp-4 text-zinc-700">
-                            {artiste.description}
-                        </p>
-                    </article>
-                ))}
-            </div>
-        </section>
-
-        <section class="mt-14">
-            <div class="mb-6 flex items-center justify-between">
-                <h2 class="text-3xl font-bold text-zinc-900">Les scènes</h2>
-                <a href="/scenes" class="text-sm font-medium underline">
+                <h2 class="font-heading text-3xl font-bold text-cream md:text-4xl">Les scènes</h2>
+                <a href="/scenes" class="text-sm font-medium text-gold transition-colors hover:text-gold-light">
                     Toutes les scènes
                 </a>
             </div>
 
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {scenes.map((scene) => (
-                    <article class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+                    <article class="group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors duration-200 hover:border-gold/40">
                         <a href={`/scenes/${scene.id}`}>
                             {getImageUrl(scene, 'photo') && (
-                                <img
-                                    src={getImageUrl(scene, 'photo')}
-                                    alt={scene.nom}
-                                    class="mb-4 h-72 w-full rounded-xl object-cover"
-                                />
+                                <div class="overflow-hidden">
+                                    <img
+                                        src={getImageUrl(scene, 'photo')}
+                                        alt={scene.nom}
+                                        class="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                </div>
                             )}
-
-                            <h3 class="text-2xl font-semibold text-zinc-900">
-                                {scene.nom}
-                            </h3>
+                            <div class="p-5">
+                                <h3 class="font-heading text-2xl font-semibold text-cream transition-colors duration-200 group-hover:text-gold">
+                                    {scene.nom}
+                                </h3>
+                            </div>
                         </a>
-
-                        <p class="mt-2 text-sm text-zinc-600">
-                            {scene.localisation}
-                        </p>
-
-                        <p class="mt-3 text-zinc-700">
-                            {scene.description}
-                        </p>
+                        <div class="px-5 pb-5">
+                            {scene.localisation && (
+                                <p class="text-sm text-cream-muted">
+                                    <span class="text-gold">📍</span> {scene.localisation}
+                                </p>
+                            )}
+                        </div>
                     </article>
                 ))}
             </div>
         </section>
 
-        <section class="mt-14">
-            <h2 class="mb-6 text-3xl font-bold text-zinc-900">Partenaires</h2>
-
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {partenaires.map((partenaire) => (
-                    <article class="rounded-2xl border border-zinc-200 bg-white p-5 text-center shadow-sm">
-                        <p class="font-semibold text-zinc-900">{partenaire}</p>
-                    </article>
-                ))}
+        <section class="mt-16 mb-8">
+            <h2 class="font-heading mb-5 text-2xl font-semibold text-cream">Partenaires</h2>
+            <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+                <div class="overflow-hidden rounded-2xl border border-dark-border bg-dark-card">
+                    <img src="/sponso1.avif" alt="Partenaire 1" class="h-28 w-full object-contain object-center p-4" />
+                </div>
+                <div class="overflow-hidden rounded-2xl border border-dark-border bg-dark-card">
+                    <img src="/sponso2.avif" alt="Partenaire 2" class="h-28 w-full object-contain object-center p-4" />
+                </div>
+                <div class="overflow-hidden rounded-2xl border border-dark-border bg-dark-card">
+                    <img src="/sponso3.avif" alt="Partenaire 3" class="h-28 w-full object-contain object-center p-4" />
+                </div>
+                <div class="overflow-hidden rounded-2xl border border-dark-border bg-dark-card">
+                    <img src="/sponso4.jpeg" alt="Partenaire 4" class="h-28 w-full object-contain object-center p-4" />
+                </div>
             </div>
         </section>
+
     </main>
 </Layout>
+
+<script>
+    const wrapper = document.getElementById('carouselWrapper') as HTMLElement | null;
+    const inner   = document.getElementById('carouselInner')   as HTMLElement | null;
+    const prevBtn = document.getElementById('carouselPrev')    as HTMLButtonElement | null;
+    const nextBtn = document.getElementById('carouselNext')    as HTMLButtonElement | null;
+
+    if (wrapper && inner && prevBtn && nextBtn) {
+        const CARD_W = 288 + 20;
+        let pos = 0;
+
+        const getVisible = () => Math.max(1, Math.floor(wrapper.offsetWidth / CARD_W));
+
+        const goTo = (newPos: number) => {
+            const max = inner.children.length - getVisible();
+            pos = Math.max(0, Math.min(newPos, max));
+            inner.style.transform = `translateX(-${pos * CARD_W}px)`;
+        };
+
+        prevBtn.addEventListener('click', () => goTo(pos - 1));
+        nextBtn.addEventListener('click', () => goTo(pos + 1));
+    }
+</script>

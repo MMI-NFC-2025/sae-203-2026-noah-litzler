@@ -26,95 +26,94 @@ const galerie = getImageUrls(artiste, 'galerie_photos');
 ---
 
 <Layout title={artiste.nom}>
-    <main class="container">
-        <a href="/artistes">← Retour aux artistes</a>
+  <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
 
-        <section class="fiche-artiste">
-            <div class="image-artiste">
-                {photoPrincipale && (
-                    <img src={photoPrincipale} alt={artiste.nom} />
-                )}
-            </div>
+    <a
+      href="/artistes"
+      class="mb-8 inline-flex items-center gap-2 text-sm text-cream-muted transition-colors hover:text-gold"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Retour aux artistes
+    </a>
 
-            <div class="infos-artiste">
-                <h1>{artiste.nom}</h1>
-                <p><strong>Genre :</strong> {artiste.genre_musical}</p>
-                <p>{artiste.description}</p>
-
-                <h2>Dates de représentation</h2>
-                <ul>
-                    {representations.map((rep) => (
-                        <li>
-                            {new Date(rep.date_heure).toLocaleDateString('fr-FR')} à {new Date(rep.date_heure).toLocaleTimeString('fr-FR', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}
-                            {rep.expand?.scene ? ` - ${rep.expand.scene.nom}` : ''}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </section>
-
-        {galerie.length > 0 && (
-            <section class="galerie">
-                <h2>Galerie photo</h2>
-                <div class="grille-galerie">
-                    {galerie.map((img, index) => (
-                        <img src={img} alt={`${artiste.nom} ${index + 1}`} />
-                    ))}
-                </div>
-            </section>
+    <section class="grid grid-cols-1 gap-8 md:grid-cols-2 mb-12">
+      <div class="overflow-hidden rounded-2xl border border-dark-border">
+        {photoPrincipale ? (
+          <img
+            src={photoPrincipale}
+            alt={artiste.nom}
+            class="h-full w-full object-cover"
+            style="max-height: 520px;"
+          />
+        ) : (
+          <div class="flex h-80 items-center justify-center bg-dark-card text-cream-muted">
+            Pas de photo
+          </div>
         )}
-    </main>
+      </div>
+
+      <div class="flex flex-col justify-center">
+        <span class="mb-3 inline-block rounded-full border border-gold/40 px-3 py-1 text-sm text-gold w-fit">
+          {artiste.genre_musical}
+        </span>
+        <h1 class="text-4xl font-bold text-cream md:text-5xl lg:text-6xl">
+          {artiste.nom}
+        </h1>
+        {artiste.description && (
+          <p class="mt-5 leading-relaxed text-cream-muted">
+            {artiste.description}
+          </p>
+        )}
+
+        {representations.length > 0 && (
+          <div class="mt-8">
+            <p class="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-gold">
+              Dates de représentation
+            </p>
+            <ul class="space-y-2">
+              {representations.map((rep) => (
+                <li class="flex items-center gap-3 rounded-xl border border-dark-border bg-dark-card px-4 py-3 text-sm">
+                  <span class="text-gold">◆</span>
+                  <span class="text-cream">
+                    {new Date(rep.date_heure).toLocaleDateString('fr-FR', {
+                      weekday: 'long',
+                      day: 'numeric',
+                      month: 'long'
+                    })}
+                  </span>
+                  <span class="text-cream-muted">
+                    {new Date(rep.date_heure).toLocaleTimeString('fr-FR', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                    {rep.expand?.scene ? ` · ${rep.expand.scene.nom}` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {galerie.length > 0 && (
+      <section>
+        <p class="mb-5 text-xs font-semibold uppercase tracking-[0.15em] text-gold">
+          Galerie photo
+        </p>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {galerie.map((img, index) => (
+            <div class="overflow-hidden rounded-xl border border-dark-border">
+              <img
+                src={img}
+                alt={`${artiste.nom} — photo ${index + 1}`}
+                class="h-44 w-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+  </main>
 </Layout>
-
-<style>
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 0;
-}
-
-.fiche-artiste {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
-    margin-bottom: 3rem;
-}
-
-.image-artiste img {
-    width: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-}
-
-.infos-artiste h1 {
-    margin-top: 0;
-}
-
-.galerie h2 {
-    margin-bottom: 1rem;
-}
-
-.grille-galerie {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1rem;
-}
-
-.grille-galerie img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-@media (max-width: 800px) {
-    .fiche-artiste {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
