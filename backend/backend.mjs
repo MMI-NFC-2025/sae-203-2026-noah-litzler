@@ -1,6 +1,6 @@
 import PocketBase from 'pocketbase';
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+const pb = new PocketBase('https://sae203.festicloze.litzler.optimiseus.fr:443');
 
 // Auth admin
 export async function superUserauth(login, mdp) {
