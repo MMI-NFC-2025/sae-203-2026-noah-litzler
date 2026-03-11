@@ -80,7 +80,7 @@ const faq = [
 ---
 
 <Layout title="Infos pratiques">
-    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <main class="container py-10">
         <section class="mb-10 overflow-hidden rounded-3xl border border-dark-border bg-dark-card">
             <div class="px-8 py-12 md:px-14">
                 <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
@@ -101,9 +101,9 @@ const faq = [
         <section class="mb-10">
             <h2 class="mb-6 font-heading text-3xl font-bold text-gold">Tarifs</h2>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div class="row">
                 {tarifs.map((tarif) => (
-                    <article class="rounded-2xl border border-dark-border bg-dark-card p-6">
+                    <article class="col-span-12 md:col-span-4 rounded-2xl border border-dark-border bg-dark-card p-6">
                         <h3 class="font-heading text-2xl font-semibold text-cream">{tarif.nom}</h3>
                         <p class="mt-3 font-heading text-3xl font-bold text-gold">{tarif.prix}</p>
                         <p class="mt-3 text-cream-muted">{tarif.description}</p>
@@ -115,9 +115,9 @@ const faq = [
         <section class="mb-10">
             <h2 class="mb-6 font-heading text-3xl font-bold text-gold">Hébergements</h2>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div class="row">
                 {hebergements.map((hebergement) => (
-                    <article class="rounded-2xl border border-dark-border bg-dark-card p-6">
+                    <article class="col-span-12 md:col-span-6 xl:col-span-4 rounded-2xl border border-dark-border bg-dark-card p-6">
                         <p class="text-xs font-semibold uppercase tracking-[0.15em] text-gold">{hebergement.type}</p>
                         <h3 class="mt-2 font-heading text-2xl font-semibold text-cream">{hebergement.nom}</h3>
                         <p class="mt-3 text-sm text-cream-muted"><strong class="text-cream">Adresse :</strong> {hebergement.adresse}</p>
@@ -130,9 +130,9 @@ const faq = [
         <section class="mb-10">
             <h2 class="mb-6 font-heading text-3xl font-bold text-gold">Transport</h2>
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="row">
                 {transports.map((transport) => (
-                    <article class="rounded-2xl border border-dark-border bg-dark-card p-6">
+                    <article class="col-span-12 md:col-span-6 rounded-2xl border border-dark-border bg-dark-card p-6">
                         <h3 class="font-heading text-2xl font-semibold text-cream">{transport.titre}</h3>
                         <p class="mt-3 text-cream-muted">{transport.description}</p>
                     </article>

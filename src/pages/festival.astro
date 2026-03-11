@@ -59,8 +59,7 @@ const valeurs = [
 ---
 
 <Layout title="Historique - Festicloze">
-    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <!-- Hero 2 colonnes -->
+    <main class="container py-10">
         <section class="mb-10 overflow-hidden rounded-3xl border border-dark-border bg-dark-card">
             <div class="flex flex-col lg:flex-row">
                 <div class="flex flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-14">
@@ -87,7 +86,6 @@ const valeurs = [
             </div>
         </section>
 
-        <!-- À propos -->
         <section class="mb-12 rounded-2xl border border-dark-border bg-dark-card p-6 md:p-8">
             <h2 class="mb-5 font-heading text-3xl font-bold text-cream">Le festival</h2>
 
@@ -121,9 +119,9 @@ const valeurs = [
             </p>
 
             <h3 class="mb-5 font-heading text-2xl font-semibold text-cream">Organisateurs</h3>
-            <div class="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div class="row mb-10">
                 {organisateurs.map((membre) => (
-                    <article class="group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors hover:border-gold/40">
+                    <article class="col-span-12 md:col-span-6 xl:col-span-3 group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors hover:border-gold/40">
                         <div class="overflow-hidden">
                             <img
                                 src={membre.photo}
@@ -140,9 +138,9 @@ const valeurs = [
             </div>
 
             <h3 class="mb-5 font-heading text-2xl font-semibold text-cream">Équipe technique</h3>
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div class="row">
                 {equipeTechnique.map((membre) => (
-                    <article class="group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors hover:border-gold/40">
+                    <article class="col-span-12 md:col-span-6 xl:col-span-4 group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors hover:border-gold/40">
                         <div class="overflow-hidden">
                             <img
                                 src={membre.photo}
@@ -159,13 +157,12 @@ const valeurs = [
             </div>
         </section>
 
-        <!-- Valeurs -->
         <section class="rounded-2xl border border-dark-border bg-dark-card p-6 md:p-8">
             <h2 class="mb-6 font-heading text-3xl font-bold text-cream">Valeurs</h2>
 
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div class="row">
                 {valeurs.map((valeur) => (
-                    <article class="rounded-2xl border border-dark-border bg-dark p-6">
+                    <article class="col-span-12 lg:col-span-4 rounded-2xl border border-dark-border bg-dark p-6">
                         <span class="mb-4 block text-2xl text-gold">◆</span>
                         <h3 class="font-heading text-2xl font-semibold text-cream">{valeur.titre}</h3>
                         <p class="mt-4 text-cream-muted">{valeur.texte}</p>

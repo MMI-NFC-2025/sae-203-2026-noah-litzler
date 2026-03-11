@@ -121,3 +121,15 @@ export async function addNewMessageContact(newMessage) {
     const record = await pb.collection('messages_contact').create(newMessage);
     return record;
 }
+
+// Ajouter un nouvel artiste
+export async function addNewArtiste(newArtiste) {
+    const record = await pb.collection('artistes').create(newArtiste);
+    return record;
+}
+
+// Modifier une scène par id
+export async function updateSceneById(id, updatedScene) {
+    const record = await pb.collection('scenes').update(id, updatedScene);
+    return record;
+}

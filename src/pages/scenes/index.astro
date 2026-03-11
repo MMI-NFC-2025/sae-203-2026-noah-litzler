@@ -6,7 +6,7 @@ const scenes = await allScenesSorted();
 ---
 
 <Layout title="Scènes">
-  <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  <main class="container py-10">
 
     <section class="mb-10 rounded-3xl bg-dark-card px-6 py-10 md:px-10" style="border: 1px solid #2a2a2a;">
       <p class="mb-3 text-sm uppercase tracking-[0.2em] text-cream-muted">
@@ -18,9 +18,9 @@ const scenes = await allScenesSorted();
       </p>
     </section>
 
-    <section class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <section class="row gap-8">
       {scenes.map((scene) => (
-        <article class="group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors duration-200 hover:border-gold/40">
+        <article class="col-span-12 md:col-span-6 lg:col-span-4 group overflow-hidden rounded-2xl border border-dark-border bg-dark-card transition-colors duration-200 hover:border-gold/40">
           <a href={`/scenes/${scene.id}`}>
             {getImageUrl(scene, 'photo') && (
               <div class="overflow-hidden">

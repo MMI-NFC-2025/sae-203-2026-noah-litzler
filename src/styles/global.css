@@ -62,3 +62,22 @@
   ::-webkit-scrollbar-track  { background: #0c0c0c; }
   ::-webkit-scrollbar-thumb  { background: #c9a84c; border-radius: 99px; }
 }
+
+@layer components {
+  .container {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+
+    @media (min-width: 40rem) { padding-inline: 1.5rem; }
+    @media (min-width: 64rem) { padding-inline: 2rem;   }
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+}

@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Contact">
-    <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <main class="container py-10">
         <section class="mb-10 rounded-3xl border border-dark-border bg-dark-card px-6 py-10 md:px-10">
             <p class="mb-3 text-sm uppercase tracking-[0.2em] text-gold">
                 Festicloze 2026
@@ -18,8 +18,8 @@ import Layout from '../layouts/Layout.astro';
             </p>
         </section>
 
-        <section class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            <div class="rounded-2xl border border-dark-border bg-dark-card p-6">
+        <section class="row gap-8">
+            <div class="col-span-12 lg:col-span-6 rounded-2xl border border-dark-border bg-dark-card p-6">
                 <h2 class="mb-4 font-heading text-2xl font-semibold text-cream">
                     Formulaire de contact
                 </h2>
@@ -88,7 +88,7 @@ import Layout from '../layouts/Layout.astro';
                 <p id="contactMessage" class="mt-4 text-sm text-cream-muted"></p>
             </div>
 
-            <div class="space-y-8">
+            <div class="col-span-12 lg:col-span-6 space-y-8">
                 <section class="rounded-2xl border border-dark-border bg-dark-card p-6">
                     <h2 class="mb-4 font-heading text-2xl font-semibold text-cream">
                         Coordonnées
@@ -99,7 +99,7 @@ import Layout from '../layouts/Layout.astro';
                             <strong class="text-gold">Email :</strong> contact@festicloze.fr
                         </li>
                         <li>
-                            <strong class="text-gold">Téléphone :</strong> 03 81 00 00 00
+                            <strong class="text-gold">Téléphone :</strong> 03 89 74 20 83
                         </li>
                         <li>
                             <strong class="text-gold">Adresse :</strong> Montbéliard, France

@@ -24,7 +24,7 @@ const photoScene = getImageUrl(scene, 'photo');
 ---
 
 <Layout title={scene.nom}>
-  <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  <main class="container py-10">
 
     <a
       href="/scenes"
@@ -34,7 +34,6 @@ const photoScene = getImageUrl(scene, 'photo');
       Retour aux scènes
     </a>
 
-    <!-- Photo de la scène -->
     {photoScene && (
       <div class="mb-10 overflow-hidden rounded-3xl border border-dark-border">
         <img
@@ -45,7 +44,6 @@ const photoScene = getImageUrl(scene, 'photo');
       </div>
     )}
 
-    <!-- Infos de la scène -->
     <section class="grid grid-cols-1 gap-8 md:grid-cols-3 mb-12">
       <div class="md:col-span-2">
         <h1 class="text-4xl font-bold text-cream md:text-5xl">
@@ -79,7 +77,6 @@ const photoScene = getImageUrl(scene, 'photo');
       </div>
     </section>
 
-    <!-- Programmation -->
     {representations.length > 0 && (
       <section>
         <p class="mb-5 text-xs font-semibold uppercase tracking-[0.15em] text-gold">
